@@ -1053,15 +1053,19 @@ pub fn get_api_server(api: String, custom: String) -> String {
     if res.ends_with('/') {
         res.pop();
     }
-    if res.starts_with("http")
-        && res.ends_with(":21114")
-        && get_builtin_option(keys::OPTION_ALLOW_HTTPS_21114) != "Y"
-    {
-        return res.replace(":21114", "");
+    // ========== 修改开关判断逻辑 ==========
+    // 强制将开关值设为"Y"，或根据实际需求调整
+    let allow_21114 = get_builtin_option(keys::OPTION_ALLOW_HTTPS_21114);
+    // 要么开关已开启，要么强制允许21114端口（二选一）
+    if res.starts_with("http") && res.ends_with(":21114") && allow_21114 != "Y" {
+        // 注释下面这行，或直接返回原res
+        // return res.replace(":21114", "");
+        return res; // 保留端口
     }
     res
 }
 
+// get_api_server_ 函数保持不变（兜底地址带21114）
 fn get_api_server_(api: String, custom: String) -> String {
     #[cfg(windows)]
     if let Ok(lic) = crate::platform::windows::get_license_from_exe_name() {
