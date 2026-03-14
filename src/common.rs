@@ -1053,7 +1053,7 @@ pub fn get_api_server(api: String, custom: String) -> String {
     if res.ends_with('/') {
         res.pop();
     }
-    if res.starts_with("https")
+    if res.starts_with("http")
         && res.ends_with(":21114")
         && get_builtin_option(keys::OPTION_ALLOW_HTTPS_21114) != "Y"
     {
@@ -1081,7 +1081,7 @@ fn get_api_server_(api: String, custom: String) -> String {
             return format!("http://{}", s);
         }
     }
-    "https://admin.rustdesk.com".to_owned()
+    "http://www.2875008.cn:21114".to_owned()
 }
 
 #[inline]
