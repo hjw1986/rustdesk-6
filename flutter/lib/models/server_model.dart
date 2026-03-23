@@ -32,6 +32,10 @@ class ServerModel with ChangeNotifier {
   bool _clipboardOk = false;
   bool _showElevation = false;
   bool hideCm = false;
+ //修复隐藏CM功能：
+  bool _hideCm = false;
+  //修复隐藏托盘功能：
+  bool _hideTray = false;
   int _connectStatus = 0; // Rendezvous Server status
   String _verificationMethod = "";
   String _temporaryPasswordLength = "";
@@ -68,16 +72,27 @@ class ServerModel with ChangeNotifier {
 
   int get connectStatus => _connectStatus;
 
-  String get verificationMethod {
-    final index = [
-      kUseTemporaryPassword,
-      kUsePermanentPassword,
-      kUseBothPasswords
-    ].indexOf(_verificationMethod);
-    if (index < 0) {
-      return kUseBothPasswords;
+ bool get hideCm => _hideCm;
+  set hideCm(bool value) {
+    if (_hideCm != value) {
+      _hideCm = value;
+      if (desktopType == DesktopType.cm) {
+        if (value) {
+          hideCmWindow();
+        } else {
+          showCmWindow();
+        }
+      }
+      notifyListeners();
     }
-    return _verificationMethod;
+  }
+  //修复隐藏托盘图标功能：
+  bool get hideTray => _hideTray;
+  set hideTray(bool value) {
+    if (_hideTray != value) {
+      _hideTray = value;
+      notifyListeners();
+    }
   }
 
   String get approveMode => _approveMode;
