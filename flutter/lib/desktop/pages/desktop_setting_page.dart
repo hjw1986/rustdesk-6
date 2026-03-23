@@ -1385,19 +1385,19 @@ class _SafetyState extends State<_Safety> with AutomaticKeepAliveClientMixin {
     return tmpWrapper();
   }
 
-  Widget hide_cm(bool enabled) {
+   //修复隐藏托盘图标功能：
+  Widget hide_tray(bool enabled) {
     return ChangeNotifierProvider.value(
         value: gFFI.serverModel,
         child: Consumer<ServerModel>(builder: (context, model, child) {
-          final enableHideCm = model.approveMode == 'password' &&
+          final enableHideTray = model.approveMode == 'password' &&
               model.verificationMethod == kUsePermanentPassword;
-          onHideCmChanged(bool? b) {
+          onHideTrayChanged(bool? b) {
             if (b != null) {
               bind.mainSetOption(
-                  key: 'allow-hide-cm', value: bool2option('allow-hide-cm', b));
+                  key: 'hide-tray', value: bool2option('hide-tray', b));
             }
           }
-
           return Tooltip(
               message: enableHideCm ? "" : translate('hide_cm_tip'),
               child: GestureDetector(
