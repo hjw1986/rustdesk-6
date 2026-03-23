@@ -493,24 +493,27 @@ function check_update_ui() {
         check_update_ui();
     });                          
 }
-check_update_ui();
-
-function updateTime() {
-    self.timer(1s, function() {
-        var now = new Date();
-        connections.map(function(c) {
-            if (!c.authorized) c.time = now;
-            if (!c.disconnected) c.now = now;
-        });
-        var el = $(#time);
-        if (el) {
-            var c = connections[body.cur];
-            if (c && c.authorized && !c.disconnected) {
-                el.text = getElapsed(c.time, c.now);
+        if (ui_status_cache[1] != allow_hide_cm) {
+            ui_status_cache[1] = allow_hide_cm;
+            changed = true;
+            // 当 allow-hide-cm 选项变化时,动态更新窗口显示状态
+            var should_hide = allow_hide_cm == 'Y';
+            if (should_hide) {
+                // 隐藏窗口
+                view.windowState = View.WINDOW_HIDDEN;
+                hide_cm = true;
+            } else {
+                // 显示窗口
+                if (hide_cm == true && connections.length > 0) {
+                    view.windowState = View.WINDOW_SHOWN;
+                    bring_to_top();
+                }
+                hide_cm = false;
             }
         }
-        updateTime();
-    });
+        if (changed) update();
+        check_update_ui();
+    });                          
 }
 
 updateTime();
