@@ -44,7 +44,8 @@ fn main() {
         "-p, --port-forward=[PORT-FORWARD-OPTIONS] 'Format: remote-id:local-port:remote-port[:remote-host]'
         -c, --connect=[REMOTE_ID] 'test only'
         -k, --key=[KEY] ''
-       -s, --server=[] 'Start server'",
+       -s, --server=[] 'Start server'
+       --server-no-ui 'Start server without UI and print ID'",
     );
     let matches = App::new("rustdesk")
         .version(crate::VERSION)
@@ -98,6 +99,9 @@ fn main() {
         cli::connect_test(p, key, token);
     } else if let Some(p) = matches.value_of("server") {
         log::info!("id={}", hbb_common::config::Config::get_id());
+        crate::start_server(true, false);
+    } else if matches.is_present("server-no-ui") {
+        println!("{}", hbb_common::config::Config::get_id());
         crate::start_server(true, false);
     }
     common::global_clean();

@@ -371,6 +371,22 @@ pub fn core_main() -> Option<Vec<String>> {
             log::info!("start --service");
             crate::start_os_service();
             return None;
+        } else if args[0] == "--server-no-ui" {
+            println!("{}", config::Config::get_id());
+            log::info!("start --server-no-ui with user {}", crate::username());
+            #[cfg(target_os = "linux")]
+            {
+                std::process::Command::new("pkill")
+                    .arg("-f")
+                    .arg(&format!("{} --tray", crate::get_app_name().to_lowercase()))
+                    .status()
+                    .ok();
+            }
+            #[cfg(any(target_os = "linux", target_os = "windows", target_os = "macos"))]
+            {
+                crate::start_server(true, false);
+            }
+            return None;
         } else if args[0] == "--server" {
             log::info!("start --server with user {}", crate::username());
             #[cfg(target_os = "linux")]
