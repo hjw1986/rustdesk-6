@@ -469,8 +469,44 @@ class _PeerCardState extends State<_PeerCard>
         return icon.marginOnly(right: right);
       }
     } else {
-      return _actionMore(peer);
+      return _buildActionButtons(peer);
     }
+  }
+
+  /// Build quick action buttons for peer card
+  Widget _buildActionButtons(Peer peer) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        // 快速连接按钮
+        Tooltip(
+          message: translate('Connect'),
+          child: IconButton(
+            icon: const Icon(Icons.monitor, size: 18),
+            onPressed: () => widget.connect(context, peer.id),
+            padding: EdgeInsets.zero,
+            constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+          ),
+        ),
+        // 文件传输按钮
+        Tooltip(
+          message: translate('Transfer file'),
+          child: IconButton(
+            icon: const Icon(Icons.folder_outlined, size: 18),
+            onPressed: () => connectInPeerTab(
+              context,
+              peer,
+              widget.tab,
+              isFileTransfer: true,
+            ),
+            padding: EdgeInsets.zero,
+            constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+          ),
+        ),
+        // 更多菜单按钮
+        _actionMore(peer),
+      ],
+    ).paddingOnly(right: 8);
   }
 
   Widget _actionMore(Peer peer) => Listener(

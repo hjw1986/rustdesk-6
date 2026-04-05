@@ -297,6 +297,26 @@ class _ConnectionPageState extends State<ConnectionPage>
             ).marginOnly(top: 22),
             SizedBox(height: 12),
             Divider().paddingOnly(right: 12),
+            // 远程控制设备列表标题
+            Container(
+              padding: EdgeInsets.only(left: 12, right: 12, top: 8, bottom: 4),
+              child: Row(
+                children: [
+                  Icon(Icons.desktop_mac, 
+                    size: 16, 
+                    color: Theme.of(context).textTheme.titleMedium?.color?.withOpacity(0.7)),
+                  SizedBox(width: 8),
+                  Text(
+                    translate('Remote Control'),
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Theme.of(context).textTheme.titleMedium?.color?.withOpacity(0.7),
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
             Expanded(child: PeerTabPage()),
           ],
         ).paddingOnly(left: 12.0)),
